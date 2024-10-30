@@ -41,7 +41,7 @@ const TestList = () => {
         {tests.map((test) => (
           <li key={test.id}>
             <h3>{test.name}</h3>
-            <p>Poeni: {test.points}</p>
+            <p>{test.description}</p>
           </li>
         ))}
       </ul>
