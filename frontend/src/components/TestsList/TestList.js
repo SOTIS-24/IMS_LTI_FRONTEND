@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { environment } from '../../env/environment';
+import { Link } from 'react-router-dom';
 import './TestList.css';
 
 const TestList = () => {
@@ -10,12 +11,12 @@ const TestList = () => {
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await fetch(environment.apiHost + 'tests'); 
+        const response = await fetch(environment.apiHost + 'tests');
         if (!response.ok) {
           throw new Error('Greška prilikom dobijanja testova');
         }
         const data = await response.json();
-        setTests(data); 
+        setTests(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -40,8 +41,10 @@ const TestList = () => {
       <ul>
         {tests.map((test) => (
           <li key={test.id}>
-            <h3>{test.name}</h3>
-            <p>{test.description}</p>
+            <Link to={`/tests/${test.id}`}>
+              <h3>{test.name}</h3>
+              <p>{test.description}</p>
+            </Link>
           </li>
         ))}
       </ul>
