@@ -1,19 +1,16 @@
 .test-form {
-    max-width: 800px;
+    max-width: 900px;
     margin: 20px auto;
-    padding: 30px;
+    padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
   }
   
   h2 {
     text-align: center;
+    margin-bottom: 30px;
     color: #333;
-    margin-bottom: 20px;
   }
   
   form {
@@ -21,175 +18,130 @@
     flex-direction: column;
     gap: 20px;
   }
-  
-  label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #555;
+
+  select, input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
   }
   
-  input[type="text"],
-  textarea,
-  select {
-    padding: 12px;
-    font-size: 16px;
+  input[type="text"], input[type="number"], textarea {
+    font-size: 14px;
+  }
+  
+  .questions-container {
+    margin-top: 30px;
+    border-top: 2px solid #ddd;
+    padding-top: 20px;
+  }
+  
+  .question-container {
+    margin-bottom: 20px;
+    padding: 15px;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    outline: none;
-    transition: border-color 0.3s ease;
-    width: 100%; 
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   }
   
-  input[type="text"]:focus,
-  textarea:focus,
-  select:focus {
-    border-color: #007BFF;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  .question-container .question-text,
+  .question-container .points-label {
+    margin-bottom: 10px;
   }
   
-  textarea {
-    resize: vertical;
-    min-height: 120px; 
-  }
-  
-  button,
-  button[type="button"] {
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+  .question-number {
+    font-weight: bold;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    color: #007BFF;
   }
   
-  button:hover,
-  button[type="button"]:hover {
-    background-color: #0056b3;
-  }
-  
-  .add-question-btn,
-  .add-answer-btn {
+  button.add-answer-btn, button.add-question-btn {
     background-color: #28a745;
-    color: #fff;
-    padding: 10px 20px;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
     border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-right: 15px;
-    display: inline-block;
+    transition: background-color 0.3s;
   }
   
-  .add-question-btn:hover,
-  .add-answer-btn:hover {
+  button.add-answer-btn:hover, button.add-question-btn:hover {
     background-color: #218838;
   }
   
   .button-container {
     display: flex;
     justify-content: flex-end;
-    gap: 15px;
     margin-top: 10px;
   }
   
-  
-  .question-container {
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    margin-top: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #007BFF; 
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    border: 1px solid #ddd; 
+  .input-container {
+    margin-top: 10px;
   }
   
-  .question-container input {
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%;
+  input[type="checkbox"] {
+    margin-left: 5px;
   }
   
-  .answer-container {
-    margin-top: 15px;
-    padding: 15px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-    margin-bottom: 10px;
-  }
-  
-  .answer-container input {
-    width: 70%; 
-  }
-  
-  .answer-container input[type="checkbox"] {
-    width: auto;
-    margin-left: 10px;
-  }
-  
-  .question-container + .question-container {
-    margin-top: 20px;
-  }
-  
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
-  
-  select {
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-  }
-  
-  .question-container {
-    margin-bottom: 20px;
-    border-bottom: 2px solid #ddd;
-  }
-  
-  .question-number,
-  .answer-number {
-    font-weight: bold;
-    color: #007BFF;
-    margin-right: 10px;
-  }
-  
-  .points-label {
+  label {
     font-size: 14px;
     color: #555;
   }
   
-  .add-answer-btn {
-    align-self: flex-end;
-    margin-top: -40px;
+  .answer-container {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    margin-left: 20px;
   }
   
-  input[type="number"] {
-    width: 80px;
+  .answer-number {
+    font-weight: bold;
+    margin-right: 10px;
   }
   
-  .question-container .question-text,
-  .question-container .points {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .answer-container input[type="text"] {
+    width: 100%; 
+    padding: 10px;
+    margin-top: 10px;
   }
   
-  .question-container .question-text {
-    margin-bottom: 10px;
+  
+  .answer-container .points-label {
+    margin-bottom: 5px;
   }
   
+  .error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+  *,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

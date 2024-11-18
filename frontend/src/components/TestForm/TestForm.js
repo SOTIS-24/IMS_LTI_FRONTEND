@@ -29,7 +29,7 @@ const TestForm = () => {
 
   const addQuestion = () => {
     setQuestions([
-      ...questions,
+      ...questions, // ... = da se sacuva na prethodno stanje liste
       {
         text: '',
         points: 0,
@@ -47,6 +47,45 @@ const TestForm = () => {
     });
     setQuestions(newQuestions);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const testData = {
+      Name: testName,
+      Description: testDescription,
+      CourseId: selectedCourse, 
+      Questions: questions.map((question) => ({
+        Text: question.text,
+        Points: question.points,
+        Answers: question.answers.map((answer) => ({
+          Text: answer.text,
+          Points: answer.points,
+          IsCorrect: answer.isCorrect,
+        })),
+      })),
+    };
+  
+    try {
+      const response = await fetch(environment.apiHost + 'tests/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(testData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Greška prilikom čuvanja testa");
+      }
+  
+      const savedTest = await response.json();
+      console.log("Test uspešno sačuvan:", savedTest);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+  
 
   return (
     <div className="test-form">
@@ -92,7 +131,7 @@ const TestForm = () => {
         </div>
 
         <div className="questions-container">
-          {questions.map((question, index) => (
+          {questions.map((question, index) => ( //iteriram kroz questions
             <div key={index} className="question-container">
               <div className="question-text">
                 <span className="question-number">Pitanje {index + 1}:</span>
@@ -146,6 +185,22 @@ const TestForm = () => {
                     }}
                     placeholder="Unesite odgovor"
                   />
+                  <div>
+                    <label htmlFor={`answer-points-${index}-${answerIndex}`} className="points-label">
+                      Bodovi za odgovor:
+                    </label>
+                    <input
+                      type="number"
+                      id={`answer-points-${index}-${answerIndex}`}
+                      value={answer.points}
+                      onChange={(e) => {
+                        const updatedQuestions = [...questions];
+                        updatedQuestions[index].answers[answerIndex].points = parseFloat(e.target.value);
+                        setQuestions(updatedQuestions);
+                      }}
+                      placeholder="0"
+                    />
+                  </div>
                   <input
                     type="checkbox"
                     checked={answer.isCorrect}
@@ -168,7 +223,7 @@ const TestForm = () => {
           </button>
         </div>
 
-        <button type="submit">Sačuvaj test</button>
+        <button type="submit" onClick={handleSubmit} >Sačuvaj test</button>
       </form>
     </div>
   );
