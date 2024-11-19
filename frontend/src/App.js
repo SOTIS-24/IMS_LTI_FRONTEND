@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<TestList />} />
         <Route path="/tests/:id" element={<Test />} />
-        <Route path="/test-form" element={<TestForm />} />
+        <Route path="/test-form/:id" element={<TestForm />} />
       </Routes>
     </Router>
   );

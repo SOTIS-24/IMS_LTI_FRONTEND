@@ -40,3 +40,70 @@
     margin: 5px 0 0;
     color: #555; 
   }
+
+  .test-item {
+    display: flex;
+    justify-content: space-between; /* Space between content and button */
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+  }
+  
+  .test-info {
+    flex: 1; /* Allows the test info to take the remaining space */
+  }
+  
+  .test-info h3 {
+    margin: 0 5px;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .test-info p {
+    margin: 5px 5px 0;
+    color: #555;
+  }  
+
+  .test-actions {
+    margin-left: 5px; /* Add space between the info and button */
+  }
+  
+  .edit-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #007bff; /* Blue background */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
+  }
+  
+  .edit-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .edit-button:focus {
+    outline: none;
+  }
+  
+  .delete-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: white; /* Blue background */
+    color: #007bff;
+    border: solid, #555, 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
+  }
+  
+  .delete-button:hover {
+    background-color: #555; /* Darker blue on hover */
+  }
+  
+  .delete-button:focus {
+    outline: none;
+  }

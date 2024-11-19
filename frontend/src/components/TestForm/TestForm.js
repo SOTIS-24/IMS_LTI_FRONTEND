@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';  // Import necessary hooks
 import { environment } from '../../env/environment';
 import './TestForm.css';
 
@@ -9,7 +10,10 @@ const TestForm = () => {
   const [testDescription, setTestDescription] = useState('');
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState(null);
+  const { id } = useParams();  // Retrieve `id` from URL params
+  const navigate = useNavigate();  // To navigate after form submission
 
+  // Fetch courses when component mounts
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -25,11 +29,32 @@ const TestForm = () => {
     };
 
     fetchCourses();
-  }, []);
+
+    // Fetch existing test data if we are editing an existing test
+    if (id != -1) {
+      const fetchTestData = async () => {
+        try {
+          const response = await fetch(environment.apiHost + `tests/${id}`);
+          if (!response.ok) {
+            throw new Error("Greska prilikom preuzimanja testa.");
+          }
+          const testData = await response.json();
+          setTestName(testData.name);
+          setTestDescription(testData.description);
+          setSelectedCourse(testData.courseId);
+          setQuestions(testData.questions);
+        } catch (err) {
+          setError(err.message);
+        }
+      };
+
+      fetchTestData();
+    }
+  }, [id]);  // Run this effect when `id` changes (or when the component mounts)
 
   const addQuestion = () => {
     setQuestions([
-      ...questions, // ... = da se sacuva na prethodno stanje liste
+      ...questions,
       {
         text: '',
         points: 0,
@@ -50,11 +75,12 @@ const TestForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const testData = {
       Name: testName,
       Description: testDescription,
-      CourseId: selectedCourse, 
+      CourseId: selectedCourse,
+      Id: id != -1 ? id : null,
       Questions: questions.map((question) => ({
         Text: question.text,
         Points: question.points,
@@ -65,34 +91,41 @@ const TestForm = () => {
         })),
       })),
     };
-  
+
     try {
-      const response = await fetch(environment.apiHost + 'tests/add', {
-        method: 'POST',
+      const method = id != -1 ? 'PUT' : 'POST';  // Use PUT if editing, POST if creating
+      const url = id != -1 ? `${environment.apiHost}tests/update` : `${environment.apiHost}tests/add`;  // Endpoint based on whether it's edit or create
+      
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(testData),
       });
-  
+
       if (!response.ok) {
         throw new Error("Greška prilikom čuvanja testa");
       }
-  
-      const savedTest = await response.json();
-      console.log("Test uspešno sačuvan:", savedTest);
+
+      const savedTest = await response.text();
+   
+      console.log("Saved test");
+      
+
+      // Redirect to tests list page after successful save
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }
   };
-  
 
   return (
     <div className="test-form">
-      <h2>Dodavanje novog testa</h2>
+      <h2>{id ? 'Izmena testa' : 'Dodavanje novog testa'}</h2>
       {error && <div className="error">{error}</div>}
       
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="course">Predmet:</label>
           <select
@@ -131,7 +164,7 @@ const TestForm = () => {
         </div>
 
         <div className="questions-container">
-          {questions.map((question, index) => ( //iteriram kroz questions
+          {questions.map((question, index) => (
             <div key={index} className="question-container">
               <div className="question-text">
                 <span className="question-number">Pitanje {index + 1}:</span>
@@ -223,7 +256,7 @@ const TestForm = () => {
           </button>
         </div>
 
-        <button type="submit" onClick={handleSubmit} >Sačuvaj test</button>
+        <button type="submit">{id ? 'Sačuvaj promene' : 'Sačuvaj test'}</button>
       </form>
     </div>
   );
