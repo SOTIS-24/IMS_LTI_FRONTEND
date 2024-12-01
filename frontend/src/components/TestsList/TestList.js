@@ -8,6 +8,7 @@ const TestList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const isPublished = useState(true);
 
   const fetchTests = async () => {
     try {
@@ -38,6 +39,35 @@ const TestList = () => {
 
   const handleEditClick = (testId) => {
     navigate(`/test-form/${testId}`);
+  };
+
+  const handlePublishClick = async (e, test) => {
+    e.preventDefault();
+
+    try {
+      const method = 'PUT'; 
+      const url = `${environment.apiHost}tests/publish`;
+      
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(test),
+      });
+
+      if (!response.ok) {
+        throw new Error("Greška prilikom objavljivanja testa");
+      }
+
+      const publishedTest = await response.text();
+      fetchTests();
+   
+      console.log("Published test");
+      
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const handleDeleteClick = async (e, test) => {
@@ -72,24 +102,31 @@ const TestList = () => {
     }
   };
 
+  
+
   return (
     <div className="test-list">
     <h2>Lista testova</h2>
     <ul>
-      {tests.map((test) => (
-        <li key={test.id} className="test-item">
+      {tests.map((test) => 
+      {
+      const fontColor = test.isPublished ? 'green' : 'black';
+      const publishVisibility = test.isPublished ? 'hidden' : 'visible';
+      return(
+        <li key={test.id} className="test-item" >
           <div className="test-info">
             <Link to={`/tests/${test.id}`}>
-              <h3>{test.name}</h3>
+              <h3 style={{ color: fontColor }}>{test.name}</h3>
               <p>{test.description}</p>
             </Link>
           </div>
           <div className="test-actions">
+            <button style={{ visibility: publishVisibility }} className="edit-button" onClick={(e) => handlePublishClick(e, test)}>Publish</button>
             <button className="edit-button" onClick={() => handleEditClick(test.id)}>Edit</button>
             <button className="delete-button" onClick={(e) => handleDeleteClick(e, test)}>Delete</button>
           </div>
         </li>
-      ))}
+      )})}
     </ul>
   </div>  
   );
