@@ -114,7 +114,7 @@ const TestList = () => {
       return(
         <li key={test.id} className="test-item" >
           <div className="test-info">
-            <Link to={`/tests/${test.id}`}>
+            <Link to={`/test-form/${test.id}`}>
               <h3 style={{ color: fontColor }}>{test.name}</h3>
               <p>{test.description}</p>
             </Link>

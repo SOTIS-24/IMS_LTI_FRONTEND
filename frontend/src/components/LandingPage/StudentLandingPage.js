@@ -11,7 +11,7 @@ function StudentLandingPage() {
 
   const fetchTests = async () => {
     try {
-      const response = await fetch(environment.apiHost + 'tests');
+      const response = await fetch(environment.apiHost + 'tests/forStudent');
       if (!response.ok) {
         throw new Error('Greška prilikom dobijanja testova');
       }
