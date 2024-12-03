@@ -8,7 +8,6 @@ const TestList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const isPublished = useState(true);
 
   const fetchTests = async () => {
     try {

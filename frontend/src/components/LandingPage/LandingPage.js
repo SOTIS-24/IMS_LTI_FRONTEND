@@ -6,11 +6,11 @@ function LandingPage() {
   const navigate = useNavigate();
 
   const handleButton1Click = () => {
-    navigate(`/tests`);
+    navigate(`/teacher-landing-page`);
   };
 
   const handleButton2Click = () => {
-    navigate(`/tests`);
+    navigate(`/student-landing-page`);
   };
 
   return (

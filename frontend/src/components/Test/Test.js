@@ -42,7 +42,7 @@ const Test = () => {
     e.preventDefault();
 
     const finalTestResult = {
-      test: test,        
+      testId: test.id,        
       questionResults: testResult
     };
 
