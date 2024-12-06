@@ -4,7 +4,7 @@ import { environment } from '../../env/environment';
 import './Test.css';
 
 const Test = () => {
-  const { id } = useParams(); //  id koji sam poslala kroz url
+  const { id } = useParams(); 
   const [test, setTest] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -40,14 +40,17 @@ const Test = () => {
 
   const handleFinishClick = async (e) => {
     e.preventDefault();
+    const username = localStorage.username;
 
     const finalTestResult = {
       testId: test.id,        
-      questionResults: testResult
+      questionResults: testResult,
+      studentUsername: username
     };
 
     try {
       const method = 'POST'; 
+      
       const url = `${environment.apiHost}testResults/finish`;
       
       const response = await fetch(url, {
@@ -67,7 +70,6 @@ const Test = () => {
       console.log("Finished test");
       
 
-      // Redirect to tests list page after successful save
       navigate('/');
     } catch (error) {
       setError(error.message);
@@ -82,16 +84,16 @@ const Test = () => {
     if (questionIndex == -1) {
       updatedResults.push({
         question: question,
-        answers: [answer], // Store multiple answers
+        answers: [answer], 
       });
     } else {
       const selectedAnswers = updatedResults[questionIndex].answers;
       const answerIndex = selectedAnswers.findIndex(a => a.id === answer.id);
       
       if (answerIndex === -1) {
-        selectedAnswers.push(answer); // Add answer
+        selectedAnswers.push(answer); 
       } else {
-        selectedAnswers.splice(answerIndex, 1); // Remove answer if already selected
+        selectedAnswers.splice(answerIndex, 1); 
       }
   
       updatedResults[questionIndex] = {
@@ -105,15 +107,13 @@ const Test = () => {
   
 
   const getAnswerClass = (question, answer) => {
-    // Find the selected answers for the current question
     const selectedAnswers = testResult.find((result) => result.question.id == question.id)?.answers || [];
     
-    // Check if the current answer is in the selected answers list
     if (selectedAnswers.some((selectedAnswer) => selectedAnswer.id == answer.id)) {
-      return 'selected-answer'; // Apply a class for the selected answer
+      return 'selected-answer'; 
     }
     
-    return ''; // No class for unselected answers
+    return ''; 
   };
   
 

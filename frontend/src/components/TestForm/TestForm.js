@@ -15,21 +15,6 @@ const TestForm = () => {
 
   // Fetch courses when component mounts
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await fetch(environment.apiHost + 'courses');
-        if (!response.ok) {
-          throw new Error("Greska prilikom preuzimanja predmeta.");
-        }
-        const data = await response.json();
-        setCourses(data);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
-
-    fetchCourses();
-
     // Fetch existing test data if we are editing an existing test
     if (id != -1) {
       const fetchTestData = async () => {
@@ -79,7 +64,8 @@ const TestForm = () => {
     const testData = {
       Name: testName,
       Description: testDescription,
-      CourseId: selectedCourse,
+      CourseId: localStorage.courseId,
+      TeacherUsername: localStorage.username,
       Id: id != -1 ? id : null,
       Questions: questions.map((question) => ({
         Text: question.text,
@@ -126,23 +112,6 @@ const TestForm = () => {
       {error && <div className="error">{error}</div>}
       
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="course">Predmet:</label>
-          <select
-            id="course"
-            value={selectedCourse}
-            onChange={(e) => setSelectedCourse(e.target.value)}
-            required
-          >
-            <option value="">Izaberite predmet</option>
-            {courses.map((course) => (
-              <option key={course.id} value={course.id}>
-                {course.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
         <div>
           <label htmlFor="testName">Naziv testa:</label>
           <input

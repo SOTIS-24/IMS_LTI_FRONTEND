@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { environment } from '../../env/environment';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import './TestList.css';
 
 const TestList = () => {
@@ -9,9 +9,12 @@ const TestList = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+
   const fetchTests = async () => {
     try {
-      const response = await fetch(environment.apiHost + 'tests');
+      const courseId = localStorage.courseId
+      console.log(courseId)
+      const response = await fetch(environment.apiHost + 'tests/list' + "/" + courseId);
       if (!response.ok) {
         throw new Error('Greška prilikom dobijanja testova');
       }
@@ -24,7 +27,6 @@ const TestList = () => {
     }
   };
   useEffect(() => {
-
     fetchTests();
   }, []);
 

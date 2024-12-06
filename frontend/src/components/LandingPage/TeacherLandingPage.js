@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import './TeacherLandingPage.css'; 
 
 function TeacherLandingPage() {
   const navigate = useNavigate();
+
+  const { role, username, courseId } = useParams();
+
+  useEffect(() => {
+      localStorage.setItem("role", role)
+      localStorage.setItem("username", username)
+      localStorage.setItem("courseId", courseId)
+
+      console.log(localStorage.role)
+  }, [role, username, courseId]);
 
   const handleMyTestsClick = () => {
     navigate(`/tests`);

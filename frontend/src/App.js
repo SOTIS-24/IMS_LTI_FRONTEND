@@ -14,8 +14,8 @@ function App() {
         <Route path="/tests" element={<TestList />} />
         <Route path="/tests/:id" element={<Test />} />
         <Route path="/test-form/:id" element={<TestForm />} />
-        <Route path="/teacher-landing-page" element={<TeacherLandingPage />} />
-        <Route path="/student-landing-page" element={<StudentLandingPage />} />
+        <Route path="/teacher-landing-page/:role/:username/:courseId" element={<TeacherLandingPage />} />
+        <Route path="/student-landing-page/:role/:username/:courseId" element={<StudentLandingPage />} />
       </Routes>
     </Router>
   );

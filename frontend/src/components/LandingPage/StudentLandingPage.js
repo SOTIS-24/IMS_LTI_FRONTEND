@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { environment } from '../../env/environment';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import './StudentLandingPage.css'; 
 
 function StudentLandingPage() {
@@ -9,9 +9,19 @@ function StudentLandingPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { role, username, courseId } = useParams();
+
+  useEffect(() => {
+      localStorage.setItem("role", role)
+      localStorage.setItem("username", username)
+      localStorage.setItem("courseId", courseId)
+      
+  }, [role, username, courseId]);
+
+
   const fetchTests = async () => {
     try {
-      const response = await fetch(environment.apiHost + 'tests/forStudent');
+      const response = await fetch(environment.apiHost + 'tests/forStudent/' + username + "/" + courseId);
       if (!response.ok) {
         throw new Error('Greška prilikom dobijanja testova');
       }
