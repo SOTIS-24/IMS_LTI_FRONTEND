@@ -100,7 +100,7 @@ const TestForm = () => {
       
 
       // Redirect to tests list page after successful save
-      navigate('/');
+      navigate('/tests');
     } catch (error) {
       setError(error.message);
     }
@@ -108,7 +108,7 @@ const TestForm = () => {
 
   return (
     <div className="test-form">
-      <h2>{id ? 'Izmena testa' : 'Dodavanje novog testa'}</h2>
+      <h2>{id!=-1 ? 'Izmena testa' : 'Dodavanje novog testa'}</h2>
       {error && <div className="error">{error}</div>}
       
       <form onSubmit={handleSubmit}>

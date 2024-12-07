@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { environment } from '../../env/environment';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 import './TestList.css';
 
 const TestList = () => {
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedTest, setSelectedTest] = useState(null);
+  const [actionType, setActionType] = useState(null);
   const navigate = useNavigate();
-
 
   const fetchTests = async () => {
     try {
-      const courseId = localStorage.courseId
-      console.log(courseId)
+      const courseId = localStorage.courseId;
       const response = await fetch(environment.apiHost + 'tests/list' + "/" + courseId);
       if (!response.ok) {
         throw new Error('Greška prilikom dobijanja testova');
@@ -26,9 +28,10 @@ const TestList = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchTests();
-  }, []);
+  }, []); 
 
   if (loading) {
     return <div>Učitavanje...</div>;
@@ -42,94 +45,118 @@ const TestList = () => {
     navigate(`/test-form/${testId}`);
   };
 
-  const handlePublishClick = async (e, test) => {
+  const handlePublishClick = (e, test) => {
     e.preventDefault();
+    setSelectedTest(test);
+    setActionType('publish');
+    window.$('#confirmationModal').modal('show');
+  };
 
+  const handleDeleteClick = (e, test) => {
+    e.preventDefault();
+    setSelectedTest(test);
+    setActionType('delete');
+    window.$('#confirmationModal').modal('show');
+  };
+
+  const confirmAction = async () => {
     try {
-      const method = 'PUT'; 
-      const url = `${environment.apiHost}tests/publish`;
-      
+      if (!selectedTest) return;
+
+      const url = actionType === 'publish'
+        ? `${environment.apiHost}tests/publish`
+        : `${environment.apiHost}tests/delete`;
+
+      const method = 'PUT';
+
       const response = await fetch(url, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(test),
+        body: JSON.stringify(selectedTest),
       });
 
       if (!response.ok) {
-        throw new Error("Greška prilikom objavljivanja testa");
+        window.$('#confirmationModal').modal('hide');
+        throw new Error(actionType === 'publish' ? 'Greška prilikom objavljivanja testa' : 'Greška prilikom brisanja testa');
       }
 
-      const publishedTest = await response.text();
-      fetchTests();
-   
-      console.log("Published test");
-      
+      fetchTests(); 
+      toast.success(actionType === 'publish' ? 'Test je uspješno objavljen' : 'Test je uspješno obrisan');
+
+      window.$('#confirmationModal').modal('hide');
     } catch (error) {
-      setError(error.message);
+      window.$('#confirmationModal').modal('hide');
+      toast.error(error.message);
     }
   };
-
-  const handleDeleteClick = async (e, test) => {
-    e.preventDefault();
-
-    try {
-      const method = 'PUT'; 
-      const url = `${environment.apiHost}tests/delete`;
-      
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(test),
-      });
-
-      if (!response.ok) {
-        throw new Error("Greška prilikom brisanja testa");
-      }
-
-      const deletedTest = await response.text();
-      fetchTests();
-   
-      console.log("Deleted test");
-      
-
-      // Redirect to tests list page after successful save
-      navigate('/');
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  
 
   return (
-    <div className="test-list">
-    <h2>Lista testova</h2>
-    <ul>
-      {tests.map((test) => 
-      {
-      const fontColor = test.isPublished ? 'green' : 'black';
-      const publishVisibility = test.isPublished ? 'hidden' : 'visible';
-      return(
-        <li key={test.id} className="test-item" >
-          <div className="test-info">
-            <Link to={`/test-form/${test.id}`}>
-              <h3 style={{ color: fontColor }}>{test.name}</h3>
-              <p>{test.description}</p>
-            </Link>
+    <div className="container mt-5">
+      <h2>Lista testova</h2>
+      <div className="row">
+        {tests.map((test) => {
+          const fontColor = test.isPublished ? 'text-success' : 'text-dark';
+          const publishVisibility = test.isPublished ? 'd-none' : 'd-block';
+
+          return (
+            <div key={test.id} className="col-12 mb-4">
+              <div className="card shadow-sm rounded card-hover">
+                <div className="card-body d-flex flex-column">
+                  <Link to={`/test-form/${test.id}`} className={`card-title ${fontColor} link-hover`}>
+                    <h5>{test.name}</h5>
+                  </Link>
+                  <p className="card-text">{test.description}</p>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <p className="card-text"><small className="text-muted">Teacher email: {test.teacherUsername}</small></p>
+                    <div className="test-actions">
+                      <button className={`btn btn-outline-success ${publishVisibility}`} onClick={(e) => handlePublishClick(e, test)}>Objavi</button>
+                      <button className="btn btn-outline-primary" onClick={() => handleEditClick(test.id)}>Uredi</button>
+                      <button className="btn btn-outline-danger" onClick={(e) => handleDeleteClick(e, test)}>Obriši</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Bootstrap modal za potvrdu */}
+      <div className="modal fade" id="confirmationModal" tabIndex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="confirmationModalLabel">
+                {actionType === 'publish' ? 'Potvrdi objavu testa' : 'Potvrdi brisanje testa'}
+              </h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              Da li ste sigurni da želite da {actionType === 'publish' ? 'objavite' : 'obrišete'} test "{selectedTest?.name}"?
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Otkaži</button>
+              <button type="button" className="btn btn-success" onClick={confirmAction}>Potvrdi</button>
+            </div>
           </div>
-          <div className="test-actions">
-            <button style={{ visibility: publishVisibility }} className="edit-button" onClick={(e) => handlePublishClick(e, test)}>Publish</button>
-            <button className="edit-button" onClick={() => handleEditClick(test.id)}>Edit</button>
-            <button className="delete-button" onClick={(e) => handleDeleteClick(e, test)}>Delete</button>
-          </div>
-        </li>
-      )})}
-    </ul>
-  </div>  
+        </div>
+      </div>
+
+      {/* React-Toastify kontejner */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </div>
   );
 };
 
