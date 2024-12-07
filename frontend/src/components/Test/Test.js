@@ -115,30 +115,34 @@ const Test = () => {
     
     return ''; 
   };
+
+  
   
 
   return (
-    <div className="test-detail">
-      <h2>{test.name}</h2>
-      <p>{test.description}</p>
-      <ul>
-        {test.questions.map((question, index) => (
-          <li key={question.id}>
-            <h4>{index + 1}. {question.text} <span>({question.points} bodova)</span></h4>
-            <ul>
-              {question.answers.map((answer) => (
-                <li key={answer.id} onClick={(e) => handleAnswer(question, answer)} className={getAnswerClass(question, answer)}>
-                  <p>{answer.text}</p>
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-      <div class="actions">
-        <button className="finish-button" onClick={(e) => handleFinishClick(e)}>Finish</button>
-      </div>
-    </div>
+    <div className="test-detail container mt-5">
+          <h2 className="text-center mb-4">{test.name}</h2>
+          <p className="text-center mb-5">{test.description}</p>
+          <ul className="list-group">
+            {test.questions.map((question, index) => (
+              <li key={question.id} className="list-group-item question-item">
+                <h4>{index + 1}. {question.text} <span className="text-muted">({question.points} poena)</span></h4>
+                <ul className="list-group">
+                  {question.answers.map((answer) => (
+                    <li 
+                      key={answer.id} 
+                      onClick={(e) => handleAnswer(question, answer)} 
+                      className={`list-group-item clickable ${getAnswerClass(question, answer)}`}
+                    >
+                      <p>{answer.text}</p>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+          <button type="submit" className="btn btn-outline-success" onClick={(e) => handleFinishClick(e)}>Završi test</button>
+        </div>
   );
 };
 
