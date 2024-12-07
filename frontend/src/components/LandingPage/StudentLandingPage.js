@@ -47,23 +47,31 @@ function StudentLandingPage() {
   }
 
   return (
-    <div className="student-landing-page">
-      <h1>Available Tests</h1>
-      <ul>
-      {tests.map((test) => 
-      {
-      return(
-        <li key={test.id} className="test-item" >
-          <div className="test-info">
-            <Link to={`/tests/${test.id}`}>
-              <h3 >{test.name}</h3>
-              <p>{test.description}</p>
-            </Link>
-          </div>
-        </li>
-      )})}
-    </ul>
+    <div className="container mt-5">
+      <h2>Testovi</h2>
+      <div className="row">
+        {tests.map((test) => {
+          const fontColor = 'text-success';
+            return (
+            <div key={test.id} className="col-12 mb-4">
+              <div className="card shadow-sm rounded card-hover">
+                <div className="card-body d-flex flex-column">
+                  <Link to={`/tests/${test.id}`} className={`card-title ${fontColor} link-hover`}>
+                    <h5>{test.name}</h5>
+                  </Link>
+                  <p className="card-text">{test.description}</p>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <p className="card-text"><small className="text-muted">Teacher email: {test.teacherUsername}</small></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
+
+
   );
 }
 

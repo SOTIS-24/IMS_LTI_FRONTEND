@@ -94,7 +94,7 @@ const TestList = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Lista testova</h2>
+      <h2>Testovi</h2>
       <div className="row">
         {tests.map((test) => {
           const fontColor = test.isPublished ? 'text-success' : 'text-dark';

@@ -44,4 +44,9 @@
   transition: all 0.1s ease;
 }
 
+.link-hover:hover {
+  transform: scale(1.005); 
+}
+
+
 
