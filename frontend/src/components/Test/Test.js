@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { environment } from '../../env/environment';
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 import './Test.css';
 
 const Test = () => {
@@ -62,17 +64,22 @@ const Test = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Greška prilikom cuvanja rada testa");
+        throw new Error("Greška prilikom čuvanja rada testa");
       }
 
-      const finishedTest = await response.text();
-   
-      console.log("Finished test");
-      
+      //toast.success('Test je uspješno završen');
+      console.log("anja 9+ " + finalTestResult.testId)
 
-      navigate('/');
+     //setTimeout(() => {
+      if(id)
+        navigate(`/test-result-details/` + finalTestResult.testId);
+      else
+      toast("Greska id")
+      //}, 2000);
+      
     } catch (error) {
       setError(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -142,7 +149,19 @@ const Test = () => {
             ))}
           </ul>
           <button type="submit" className="btn btn-outline-success" onClick={(e) => handleFinishClick(e)}>Završi test</button>
-        </div>
+        
+          <ToastContainer
+          position="bottom-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+      />    
+    </div>
   );
 };
 
