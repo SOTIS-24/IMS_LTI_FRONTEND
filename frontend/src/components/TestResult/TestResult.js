@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { environment } from '../../env/environment';
+import { useParams, useNavigate } from 'react-router-dom';
+import './TestResult.css'; 
 
-
-const TestResult = ({ testId }) => {
+const TestResult = () => {
+  const { testId } = useParams();
+  const navigate = useNavigate();
   const [testResult, setTestResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,21 +30,18 @@ const TestResult = ({ testId }) => {
     fetchTestResult();
   }, [testId]); 
 
-  const getAnswerClass = (answer, isSelected, isCorrect) => {
-    if (isSelected && isCorrect) {
-      return 'correct-answer'; 
-    }
-    if (isSelected && !isCorrect) {
-      return 'incorrect-answer'; 
-    }
-    if (!isSelected && isCorrect) {
-      return 'correct-answer'; 
-    }
-    return ''; 
+  const getAnswerClass = (answer) => {
+    return answer.isCorrect ? 'correct-answer' : 'incorrect-answer'; 
   };
 
+  const handleFinishResultClick = () => {
+    navigate(`/student-landing-page/` + localStorage.role + `/` + localStorage.username + `/` + localStorage.courseId);
+  };
+
+  
+
   if (loading) {
-    return <div>Učitavam rezultate...</div>;  
+    return <div>Učitavanje rezultata...</div>;  
   }
 
   if (error) {
@@ -52,35 +52,35 @@ const TestResult = ({ testId }) => {
     return <div>Rezultati nisu dostupni</div>;  
   }
 
+  
+
   return (
     <div className="test-detail container mt-5">
-      <h2 className="text-center mb-4">Rezultat testa</h2>
-      <p className="text-center mb-5">Test: {testResult.testName}</p>
+      <h2 className="text-center mb-4">Rezultat testa</h2>                 {/* dodati naslov testa..I POPRAVITI PRIKAZ ODARBANIH I TACNIH SVIH ODG*/}
 
       <ul className="list-group">
-        {testResult.questionResults.map((question, index) => (
-          <li key={question.id} className="list-group-item question-item">
-            <h4>{index + 1}. {question.text} 
-              <span className="text-muted"> ({question.points} poena)</span>
+        {testResult.questionResults.map((questionResult, index) => (
+          <li key={questionResult.id} className="list-group-item question-item">
+            <h4>{index + 1}. {questionResult.question.text} 
+              <span className="text-muted"> ({questionResult.points} poena)</span>
             </h4>
 
-            {/* odabrani odgovori */}
+            {/* Odabrani odgovori */}
             <div className="selected-answers">
               <h5>Odabrani odgovori:</h5>
               <ul className="list-group">
-                {question.answerResults.map((answer, idx) => (
-                  <li key={idx} className={`list-group-item ${getAnswerClass(answer, answer.isSelected, answer.isCorrect)}`}>
+                {questionResult.answers.map((answer, idx) => (
+                  <li key={idx} className={`list-group-item ${getAnswerClass(answer)}`}>
                     <p>{answer.text} - {answer.points} poena</p>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* ttacni odgovori */}
             <div className="correct-answers">
               <h5>Tačni odgovori:</h5>
               <ul className="list-group">
-                {question.answerResults.filter(a => a.isCorrect).map((answer, idx) => (
+                {questionResult.question.answers.filter(answer => answer.isCorrect).map((answer, idx) => (
                   <li key={idx} className="list-group-item correct-answer">
                     <p>{answer.text} - {answer.points} poena</p>
                   </li>
@@ -88,13 +88,17 @@ const TestResult = ({ testId }) => {
               </ul>
             </div>
 
+
             <hr />
-            <p><strong>Bodovi za pitanje:</strong> {question.pointsAchieved} / {question.maxPoints}</p>
+            <p><strong>Bodovi za pitanje:</strong> {questionResult.points} / {questionResult.question.points}</p>
           </li>
         ))}
       </ul>
 
-      <h4 className="text-center mt-4">Ukupni bodovi: {testResult.totalPoints} / {testResult.maxTotalPoints}</h4>
+      <h4 className="text-center mt-4">Ukupni bodovi: {testResult.points} / {testResult.questionResults.reduce((sum, q) => sum + q.points, 0)}</h4>
+
+      <button type="button" className="btn-add btn-outline-primary btn-center" onClick={() => handleFinishResultClick()}>ZAVRŠI PREGLED REZULTATA</button>
+
     </div>
   );
 };

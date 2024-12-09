@@ -67,15 +67,12 @@ const Test = () => {
         throw new Error("Greška prilikom čuvanja rada testa");
       }
 
-      //toast.success('Test je uspješno završen');
-      console.log("anja 9+ " + finalTestResult.testId)
+      toast.success('Test je uspješno završen');
+     // console.log("anja 9+ " + finalTestResult.testId)
 
-     //setTimeout(() => {
-      if(id)
+     setTimeout(() => {
         navigate(`/test-result-details/` + finalTestResult.testId);
-      else
-      toast("Greska id")
-      //}, 2000);
+     }, 2000);
       
     } catch (error) {
       setError(error.message);
