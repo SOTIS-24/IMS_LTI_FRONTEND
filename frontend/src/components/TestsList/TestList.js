@@ -52,6 +52,11 @@ const TestList = () => {
     window.$('#confirmationModal').modal('show');
   };
 
+  const handleResultsClick = (e, test) => {
+    e.preventDefault();
+    navigate(`/test-result-details-teacher/` + test.id)
+  };
+
   const handleDeleteClick = (e, test) => {
     e.preventDefault();
     setSelectedTest(test);
@@ -112,7 +117,8 @@ const TestList = () => {
                     <p className="card-text"><small className="text-muted">Teacher email: {test.teacherUsername}</small></p>
                     <div className="test-actions">
                       <button className={`btn btn-outline-success ${publishVisibility}`} onClick={(e) => handlePublishClick(e, test)}>Objavi</button>
-                      <button className="btn btn-outline-primary" onClick={() => handleEditClick(test.id)}>Uredi</button>
+                      <button className={`btn btn-outline-success ${!publishVisibility}`} onClick={(e) => handleResultsClick(e, test)}>Vidi rezultate</button>
+                      <button className={`btn btn-outline-primary ${publishVisibility}`} onClick={() => handleEditClick(test.id)}>Uredi</button>
                       <button className="btn btn-outline-danger" onClick={(e) => handleDeleteClick(e, test)}>Obriši</button>
                     </div>
                   </div>
