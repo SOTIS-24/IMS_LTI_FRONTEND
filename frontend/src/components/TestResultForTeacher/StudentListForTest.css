@@ -1,0 +1,21 @@
+.card-body {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-text {
+    margin-bottom: 10px;
+  }
+  .card-hover {
+    background: linear-gradient(135deg, #f8f9fa, #f0f2f4); 
+    transition: transform 0.1s ease, box-shadow 0.3s ease; 
+  }
+  
+  .card-hover:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  }
+
+  
+.link-hover:hover {
+    transform: scale(1.005); 
+  }

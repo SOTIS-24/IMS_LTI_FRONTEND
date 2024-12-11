@@ -37,6 +37,9 @@ const TestResultForTeacher = () => {
     navigate(`/tests`);
   };
 
+  const handleSeeStudentsClick = () => {
+    navigate(`/test-result-student-list/` + testId);
+  };
   const getPercentage = (questionId, answerId) => {
    //console.log(testStatistics.answerStatistics);
    if(!testStatistics || !testStatistics.answerStatistics)
@@ -75,7 +78,9 @@ const TestResultForTeacher = () => {
                 <h5>Broj studenata</h5>
                 <p>{testStatistics.numberOfStudents}</p>
             </div>
-            <button className='finish-button'>Vidi spisak studenata</button>
+            <button type="button" className="btn-add btn-outline-primary" onClick={() => handleSeeStudentsClick()}>
+                Vidi spisak studenata
+            </button>
         </div>
         </div>
 
