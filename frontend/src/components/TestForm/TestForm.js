@@ -11,6 +11,7 @@ const TestForm = () => {
   const [testDescription, setTestDescription] = useState('');
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState(null);
+  const [isPublished, setIsPublished] = useState(false);
   const { id } = useParams();  
   const navigate = useNavigate(); 
 
@@ -26,6 +27,7 @@ const TestForm = () => {
           setTestName(testData.name);
           setTestDescription(testData.description);
           setSelectedCourse(testData.courseId);
+          setIsPublished(testData.isPublished);
           setQuestions(testData.questions);
         } catch (err) {
           setError(err.message);
@@ -65,6 +67,7 @@ const TestForm = () => {
       Description: testDescription,
       CourseId: localStorage.courseId,
       TeacherUsername: localStorage.username,
+      IsPublished: isPublished,
       Id: id != -1 ? id : null,
       Questions: questions.map((question) => ({
         Text: question.text,
@@ -110,6 +113,12 @@ const TestForm = () => {
   return (
     <div className="container mt-5">
       <h2 className="text-center mb-4">{id !== '-1' ? 'Izmjena testa' : 'Dodavanje novog testa'}</h2>
+      <p className="mb-4">
+        {isPublished 
+          ? "U ovoj formi možete izmijeniti postojeći test. Ako su test i njegovi odgovori već objavljeni, nećete moći napraviti promjene."
+          : "Dodajte novi test popunjavanjem sljedećih polja. Dodajte pitanja i odgovore, a zatim sačuvajte test."
+        }
+      </p>
       {error && <div className="alert alert-danger">{error}</div>}
   
       <div className="card shadow-sm rounded" style={{ backgroundColor: "#f0f2f4" }}>
@@ -232,7 +241,7 @@ const TestForm = () => {
               </button>
             </div>
   
-            <button type="submit" className="btn btn-outline-success">
+            <button type="submit" className="btn btn-outline-success" disabled={isPublished}>
               {id !== '-1' ? 'Sačuvaj promjene' : 'Sačuvaj test'}
             </button>
           </form>
