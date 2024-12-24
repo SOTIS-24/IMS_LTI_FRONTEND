@@ -46,7 +46,7 @@ const TestResultForTeacher = () => {
     return 0;
      return testStatistics.answerStatistics.find((a) => {
          return a.questionId === questionId && a.answerId === answerId;
-     });
+     }).percentageOfStudents;
   }
 
   if (loading) {
