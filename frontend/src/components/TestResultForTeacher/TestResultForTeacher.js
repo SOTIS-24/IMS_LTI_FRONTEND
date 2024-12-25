@@ -65,18 +65,16 @@ const TestResultForTeacher = () => {
 
   return (
     <div className="test-detail container mt-5">
-      <h2 className="text-center mb-4">Rezultat testa</h2>                 {/* dodati naslov testa..I POPRAVITI PRIKAZ ODARBANIH I TACNIH SVIH ODG*/}
+      <h2 className="text-center mb-4">Statistika rezultata testa</h2>                 {/* dodati naslov testa..I POPRAVITI PRIKAZ ODARBANIH I TACNIH SVIH ODG*/}
 
         <div className='statistics'>
         <div>
-            <h5>Maksimalno poena</h5>
-            <p>{testStatistics.test.points}</p>
+            <h5>Mogući broj poenta na testu: {testStatistics.test.points}</h5>
         </div>
 
         <div className='students'>
             <div>
-                <h5>Broj studenata</h5>
-                <p>{testStatistics.numberOfStudents}</p>
+                <h5>Broj studenata: {testStatistics.numberOfStudents}</h5>
             </div>
             <button type="button" className="btn-add btn-outline-primary" onClick={() => handleSeeStudentsClick()}>
                 Vidi spisak studenata
@@ -86,13 +84,11 @@ const TestResultForTeacher = () => {
 
         <div className='min-and-max-points'>
             <div>
-                <h5>Maksimalno osvojeno poena</h5>
-                <p>{testStatistics.maxResult}</p>
+                <h5>Najbolji ostvareni rezultat: {testStatistics.maxResult}/{testStatistics.test.points}</h5>
             </div>
 
             <div>
-                <h5>Minimalno osvojeno poena</h5>
-                <p>{testStatistics.minResult}</p>
+                <h5>Najlošiji ostvareni rezultat: {testStatistics.minResult}/{testStatistics.test.points}</h5>
             </div>
         </div>
 
@@ -113,7 +109,7 @@ const TestResultForTeacher = () => {
                     <div>
                         <p>{answer.text} </p>
                         <p> {answer.points} poena</p>
-                        <p>{getPercentage(question.id, answer.id)} % of students</p>
+                        <p>{getPercentage(question.id, answer.id)} % studenata</p>
                     </div>
                   </li>
                 ))}

@@ -116,8 +116,8 @@ const TestList = () => {
                   <div className="d-flex justify-content-between align-items-center">
                     <p className="card-text"><small className="text-muted">Teacher email: {test.teacherUsername}</small></p>
                     <div className="test-actions">
-                      <button className={`btn btn-outline-success ${publishVisibility}`} onClick={(e) => handlePublishClick(e, test)}>Objavi</button>
-                      <button className={`btn btn-outline-success ${!publishVisibility}`} onClick={(e) => handleResultsClick(e, test)}>Vidi rezultate</button>
+                      <button className={`btn btn-outline-success ${publishVisibility}`} hidden = {test.isPublished} onClick={(e) => handlePublishClick(e, test)}>Objavi</button>
+                      <button className={`btn btn-outline-success`} hidden = {!test.isPublished} onClick={(e) => handleResultsClick(e, test)}>Vidi rezultate</button>
                       <button className={`btn btn-outline-primary ${publishVisibility}`} onClick={() => handleEditClick(test.id)}>Uredi</button>
                       <button className="btn btn-outline-danger" onClick={(e) => handleDeleteClick(e, test)}>Obriši</button>
                     </div>

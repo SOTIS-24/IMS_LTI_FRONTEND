@@ -115,8 +115,6 @@
   }
   
   .min-and-max-points{
-    display: flex;
-    justify-content: space-between;
     padding: 20px;
     background-color: #ffffff;
     border: 1px solid #ddd;
