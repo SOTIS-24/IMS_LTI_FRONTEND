@@ -35,7 +35,7 @@ const TestResultForStudent = () => {
   };
 
   const handleFinishResultClick = () => {
-    navigate(`/test-result-student-list/` + testId);
+    navigate(`/tests`);
   };
 
   
@@ -67,7 +67,6 @@ const TestResultForStudent = () => {
         {testResult.questionResults.map((questionResult, index) => (
           <li key={questionResult.id} className="list-group-item question-item">
             <h4>{index + 1}. {questionResult.question.text} 
-              <span className="text-muted"> ({questionResult.points} poena)</span>
             </h4>
 
             {/* Odabrani odgovori */}
@@ -100,7 +99,7 @@ const TestResultForStudent = () => {
         ))}
       </ul>
 
-      <h4 className="text-center mt-4">Ukupni bodovi: {testResult.points} / {testResult.questionResults.reduce((sum, q) => sum + q.points, 0)}</h4>
+      <h4 className="text-center mt-4">Ukupni bodovi: {testResult.points} / {testResult.questionResults.reduce((sum, q) => sum + q.question.points, 0)}</h4>
 
       <button type="button" className="btn-add btn-outline-primary btn-center" onClick={() => handleFinishResultClick()}>ZAVRŠI PREGLED REZULTATA</button>
 
