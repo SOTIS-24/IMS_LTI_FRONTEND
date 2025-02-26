@@ -129,6 +129,7 @@ const TestForm = () => {
               <input
                 type="text"
                 id="testName"
+                disabled={isPublished}
                 className="form-control"
                 value={testName}
                 onChange={(e) => setTestName(e.target.value)}
@@ -140,6 +141,7 @@ const TestForm = () => {
               <label htmlFor="testDescription" className="form-label">Opis testa:</label>
               <textarea
                 id="testDescription"
+                disabled={isPublished}
                 className="form-control"
                 value={testDescription}
                 onChange={(e) => setTestDescription(e.target.value)}
@@ -155,6 +157,7 @@ const TestForm = () => {
                       <label htmlFor={`question-${index}`} className="form-label">Pitanje {index + 1}:</label>
                       <input
                         type="text"
+                        disabled={isPublished}
                         className="form-control"
                         value={question.text}
                         onChange={(e) => {
@@ -165,7 +168,7 @@ const TestForm = () => {
                         placeholder="Unesite pitanje"
                       />
                     </div>
-                    <button type="button" className="btn-add btn-outline-primary" onClick={() => addAnswer(index)}>
+                    <button type="button" hidden={isPublished} className="btn-add btn-outline-primary" onClick={() => addAnswer(index)}>
                       DODAJ ODGOVOR
                     </button>
                   </div>
@@ -174,6 +177,7 @@ const TestForm = () => {
                     <label htmlFor={`points-${index}`} className="form-label">Bodovi:</label>
                     <input
                       type="number"
+                      disabled={isPublished}
                       id={`points-${index}`}
                       className="form-control"
                       value={question.points}
@@ -191,6 +195,7 @@ const TestForm = () => {
                       <label className="form-label">Odgovor {answerIndex + 1}:</label>
                       <input
                         type="text"
+                        disabled={isPublished}
                         className="form-control"
                         value={answer.text}
                         onChange={(e) => {
@@ -205,6 +210,7 @@ const TestForm = () => {
                         <label htmlFor={`answer-points-${index}-${answerIndex}`} className="form-label">Bodovi za odgovor:</label>
                         <input
                           type="number"
+                          disabled={isPublished}
                           id={`answer-points-${index}-${answerIndex}`}
                           className="form-control"
                           value={answer.points}
@@ -220,6 +226,7 @@ const TestForm = () => {
                       <div>
                         <input
                           type="checkbox"
+                          disabled={isPublished}
                           checked={answer.isCorrect}
                           onChange={(e) => {
                             const updatedQuestions = [...questions];
@@ -236,12 +243,12 @@ const TestForm = () => {
             </div>
   
             <div className="mb-3">
-              <button type="button" className="btn btn-outline-primary" onClick={addQuestion}>
+              <button type="button" className="btn btn-outline-primary" onClick={addQuestion} hidden={isPublished}>
                 DODAJ PITANJE
               </button>
             </div>
   
-            <button type="submit" className="btn btn-outline-success" disabled={isPublished}>
+            <button type="submit" className="btn btn-outline-success" hidden={isPublished}>
               {id !== '-1' ? 'Sačuvaj promjene' : 'Sačuvaj test'}
             </button>
           </form>

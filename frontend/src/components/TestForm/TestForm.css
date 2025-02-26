@@ -124,3 +124,8 @@ textarea {
   opacity: 0.85;
   transition: all 0.1s ease;
 }
+
+input:disabled,
+textarea:disabled {
+  color: rgb(32, 32, 32) !important;
+}
